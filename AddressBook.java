@@ -1,18 +1,31 @@
 package com.addressbook;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 public class AddressBook {
 
 	public static void main(String[] args) {
 //		first use case
 		AddressBook addressBook = new AddressBook();
-		addressBook.createContact();
-		
-	}
-	
-	public void createContact() {
 		Person person = new Person();
 		Scanner scanner = new Scanner(System.in);
+//		Person contact = addressBook.createContact(person, scanner);
+//		System.out.println("object level contact");
+//		System.out.println(contact);
+		
+		// second use case to store multiple contacts
+		ArrayList<Person> contactListRepository = new ArrayList<Person>();
+		System.out.println("how may contacts you would like to create?");
+		int inputCount = scanner.nextInt(); //2
+		for(int i=0;i<inputCount;i++) {
+			Person contact = addressBook.createContact(person, scanner);
+			contactListRepository.add(person);
+		}
+		System.out.println("Repository level Contacts");
+		System.out.println(contactListRepository);
+	}
+	
+	public Person createContact(Person person, Scanner scanner) {
 
 		System.out.println("Enter the first name:");
 		String Fname = scanner.next();
@@ -41,10 +54,9 @@ public class AddressBook {
 		System.out.println("Enter the E-mail");
 		String email = scanner.next();
 		person.setEmail(email);
-
-		System.out.println(person);
-
-		scanner.close();
+//		System.out.println(person);
+//		scanner.close();
+		return person;
 
 	}
 
