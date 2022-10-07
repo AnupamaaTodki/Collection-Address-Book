@@ -2,6 +2,7 @@ package com.addressbook;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+
 public class AddressBook {
 
 	public static void main(String[] args) {
@@ -23,6 +24,10 @@ public class AddressBook {
 		}
 		System.out.println("Repository level Contacts");
 		System.out.println(contactListRepository);
+		
+		
+		//edit contact
+		addressBook.editContact(contactListRepository);
 	}
 	
 	public Person createContact(Person person, Scanner scanner) {
@@ -57,7 +62,50 @@ public class AddressBook {
 //		System.out.println(person);
 //		scanner.close();
 		return person;
-
 	}
+	
+	public void editContact(ArrayList<Person> contactListRepository) {
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("Enter your First name:");
+		String Enteredname = scanner.next();
+		
+//		Iterator<Person> iterator = personRepository.persons.listIterator();
+		System.out.println("Choose field you want to Edit:");
+		System.out.println("1.Last Name\t2.Phone Number\t3.City\t4.Zip\t5. State");
 
+		for (int i = 0; i < contactListRepository.size(); i++) {
+			
+			Person person = contactListRepository.get(i);
+			
+			if (Enteredname.equals(person.getFname())) {
+				
+				switch (scanner.nextInt()) {
+				case 1:
+					System.out.println("Re-Correct your lastname");
+					person.setLname(scanner.next());
+					break;
+				case 2:
+					System.out.println("Re-Correct your Phone Number");
+					person.setPhonenumber(scanner.nextLong());
+					break;
+				case 3:
+					System.out.println("Re-Correct your City");
+					person.setCity(scanner.next());
+					break;
+				case 4:
+					System.out.println("Re-Correct your Zip");
+					person.setZip(scanner.nextLong());
+					break;
+				case 5:
+					System.out.println("Re-Correct your State");
+					person.setState(scanner.next());
+					break;
+				}
+				System.out.println("edited contact details");
+				System.out.println(person);
+			}
+		}
+		System.out.println("After Editing Contact");
+		System.out.println(contactListRepository);
+	}
 }
