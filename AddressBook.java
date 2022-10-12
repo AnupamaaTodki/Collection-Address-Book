@@ -1,6 +1,7 @@
 package com.addressbook;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class AddressBook {
@@ -8,29 +9,30 @@ public class AddressBook {
 	public static void main(String[] args) {
 //		first use case
 		AddressBook addressBook = new AddressBook();
-		Person person = new Person();
+
 		Scanner scanner = new Scanner(System.in);
-//		Person contact = addressBook.createContact(person, scanner);
-//		System.out.println("object level contact");
-//		System.out.println(contact);
-		
+//		
 		// second use case to store multiple contacts
 		ArrayList<Person> contactListRepository = new ArrayList<Person>();
 		System.out.println("how may contacts you would like to create?");
-		int inputCount = scanner.nextInt(); //2
-		for(int i=0;i<inputCount;i++) {
-			Person contact = addressBook.createContact(person, scanner);
-			contactListRepository.add(person);
+		int inputCount = scanner.nextInt(); // 2
+		for (int i = 0; i < inputCount; i++) {
+			Person contact = addressBook.createContact(scanner);
+			contactListRepository.add(contact);
 		}
 		System.out.println("Repository level Contacts");
 		System.out.println(contactListRepository);
-		
-		
-		//edit contact
+
+		// edit contact
 		addressBook.editContact(contactListRepository);
+
+		// delete contact
+		addressBook.deleteContact(contactListRepository);
 	}
-	
-	public Person createContact(Person person, Scanner scanner) {
+
+	public Person createContact(Scanner scanner) {
+
+		Person person = new Person();
 
 		System.out.println("Enter the first name:");
 		String Fname = scanner.next();
@@ -59,26 +61,25 @@ public class AddressBook {
 		System.out.println("Enter the E-mail");
 		String email = scanner.next();
 		person.setEmail(email);
-//		System.out.println(person);
-//		scanner.close();
+
 		return person;
 	}
-	
+
 	public void editContact(ArrayList<Person> contactListRepository) {
 		Scanner scanner = new Scanner(System.in);
-		System.out.println("Enter your First name:");
+		System.out.println("Enter your First name you want to edit:");
 		String Enteredname = scanner.next();
-		
-//		Iterator<Person> iterator = personRepository.persons.listIterator();
+
+		Iterator<Person> iterator = contactListRepository.listIterator();
 		System.out.println("Choose field you want to Edit:");
-		System.out.println("1.Last Name\t2.Phone Number\t3.City\t4.Zip\t5. State");
+		System.out.println("1.Last Name\t2.Phone Number\t3.City\t4.Zip\t5. State\t6.Email");
 
 		for (int i = 0; i < contactListRepository.size(); i++) {
-			
+
 			Person person = contactListRepository.get(i);
-			
+
 			if (Enteredname.equals(person.getFname())) {
-				
+
 				switch (scanner.nextInt()) {
 				case 1:
 					System.out.println("Re-Correct your lastname");
@@ -100,6 +101,10 @@ public class AddressBook {
 					System.out.println("Re-Correct your State");
 					person.setState(scanner.next());
 					break;
+				case 6:
+					System.out.println("Re-correct your email");
+					person.setEmail(scanner.next());
+					break;
 				}
 				System.out.println("edited contact details");
 				System.out.println(person);
@@ -107,5 +112,21 @@ public class AddressBook {
 		}
 		System.out.println("After Editing Contact");
 		System.out.println(contactListRepository);
+	}
+
+	public void deleteContact(ArrayList<Person> contactListRepository) {
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("Enter your First name you want to delete:");
+		String pFname = scanner.next();
+
+		Iterator<Person> iterator = contactListRepository.listIterator();
+		while (iterator.hasNext()) {
+			Person person = iterator.next();
+
+			if (pFname.equals(person.getFname())) {
+				contactListRepository.remove(person);
+				System.out.println(contactListRepository);
+			}
+		}
 	}
 }
