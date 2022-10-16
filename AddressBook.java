@@ -13,21 +13,42 @@ public class AddressBook {
 		Scanner scanner = new Scanner(System.in);
 //		
 		// second use case to store multiple contacts
-		ArrayList<Person> contactListRepository = new ArrayList<Person>();
-		System.out.println("how may contacts you would like to create?");
-		int inputCount = scanner.nextInt(); // 2
-		for (int i = 0; i < inputCount; i++) {
-			Person contact = addressBook.createContact(scanner);
-			contactListRepository.add(contact);
+		AddressBookRepo addressBookRepo = new AddressBookRepo();
+		
+		System.out.println("Enter how many address books you want to create?");
+		int addressBookCount = scanner.nextInt();
+		for(int i = 0; i < addressBookCount; i++) {
+			
+			ContactListRepository contactListRepository = new ContactListRepository();
+			System.out.println("how may contacts you would like to create in address book " + (i + 1));
+			int inputCount = scanner.nextInt(); // 2
+			
+			System.out.println("Enter the name of address book");
+			
+			contactListRepository.setContactRepoName(scanner.next());
+			
+			for (int j = 0; j < inputCount; j++) {
+				Person contact = addressBook.createContact(scanner);
+				contactListRepository.add(contact);
+			}
+			
+			addressBookRepo.add(contactListRepository);
 		}
-		System.out.println("Repository level Contacts");
-		System.out.println(contactListRepository);
+		
+		System.out.println("The address books you have created are as below");
+		for (int i = 0; i <addressBookRepo.addressBooks.size(); i++) { 
+			
+			ContactListRepository contactRepo = addressBookRepo.addressBooks.get(i);
+			String repoName = contactRepo.repoName;
+			System.out.println(repoName);
+			System.out.println(contactRepo.contactListRepo);
+		}
 
 		// edit contact
-		addressBook.editContact(contactListRepository);
-
+		addressBook.editContact(addressBookRepo);
+//
 		// delete contact
-		addressBook.deleteContact(contactListRepository);
+		addressBook.deleteContact(addressBookRepo);
 	}
 
 	public Person createContact(Scanner scanner) {
@@ -65,68 +86,86 @@ public class AddressBook {
 		return person;
 	}
 
-	public void editContact(ArrayList<Person> contactListRepository) {
+	//ContactListRepository contactListRepository
+	public void editContact(AddressBookRepo addressBookRepo) {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Enter your First name you want to edit:");
 		String Enteredname = scanner.next();
 
-		Iterator<Person> iterator = contactListRepository.listIterator();
+//		Iterator<Person> iterator = contactListRepository.contactListRepo.listIterator();
 		System.out.println("Choose field you want to Edit:");
 		System.out.println("1.Last Name\t2.Phone Number\t3.City\t4.Zip\t5. State\t6.Email");
 
-		for (int i = 0; i < contactListRepository.size(); i++) {
-
-			Person person = contactListRepository.get(i);
-
-			if (Enteredname.equals(person.getFname())) {
-
-				switch (scanner.nextInt()) {
-				case 1:
-					System.out.println("Re-Correct your lastname");
-					person.setLname(scanner.next());
-					break;
-				case 2:
-					System.out.println("Re-Correct your Phone Number");
-					person.setPhonenumber(scanner.nextLong());
-					break;
-				case 3:
-					System.out.println("Re-Correct your City");
-					person.setCity(scanner.next());
-					break;
-				case 4:
-					System.out.println("Re-Correct your Zip");
-					person.setZip(scanner.nextLong());
-					break;
-				case 5:
-					System.out.println("Re-Correct your State");
-					person.setState(scanner.next());
-					break;
-				case 6:
-					System.out.println("Re-correct your email");
-					person.setEmail(scanner.next());
-					break;
+		for (int j = 0; j < addressBookRepo.addressBooks.size(); j++) {
+			ContactListRepository contactRepo = addressBookRepo.addressBooks.get(j);
+			for (int i = 0; i < contactRepo.contactListRepo.size(); i++) {
+				Person person = contactRepo.contactListRepo.get(i);
+				if (Enteredname.equals(person.getFname())) {
+					switch (scanner.nextInt()) {
+					case 1:
+						System.out.println("Re-Correct your lastname");
+						person.setLname(scanner.next());
+						break;
+					case 2:
+						System.out.println("Re-Correct your Phone Number");
+						person.setPhonenumber(scanner.nextLong());
+						break;
+					case 3:
+						System.out.println("Re-Correct your City");
+						person.setCity(scanner.next());
+						break;
+					case 4:
+						System.out.println("Re-Correct your Zip");
+						person.setZip(scanner.nextLong());
+						break;
+					case 5:
+						System.out.println("Re-Correct your State");
+						person.setState(scanner.next());
+						break;
+					case 6:
+						System.out.println("Re-correct your email");
+						person.setEmail(scanner.next());
+						break;
+					}
+					System.out.println("edited contact details");
+					System.out.println(person);
 				}
-				System.out.println("edited contact details");
-				System.out.println(person);
 			}
 		}
+		
 		System.out.println("After Editing Contact");
-		System.out.println(contactListRepository);
+		for (int i = 0; i <addressBookRepo.addressBooks.size(); i++) { 
+			ContactListRepository contactRepoInfo = addressBookRepo.addressBooks.get(i);
+			String repoName = contactRepoInfo.repoName;
+			System.out.println(repoName);
+			System.out.println(contactRepoInfo.contactListRepo);
+		}
 	}
+		
 
-	public void deleteContact(ArrayList<Person> contactListRepository) {
+	public void deleteContact(AddressBookRepo addressBookRepo) {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Enter your First name you want to delete:");
 		String pFname = scanner.next();
 
-		Iterator<Person> iterator = contactListRepository.listIterator();
-		while (iterator.hasNext()) {
-			Person person = iterator.next();
-
-			if (pFname.equals(person.getFname())) {
-				contactListRepository.remove(person);
-				System.out.println(contactListRepository);
+		for (int j = 0; j < addressBookRepo.addressBooks.size(); j++) {
+			ContactListRepository contactRepo = addressBookRepo.addressBooks.get(j);
+			for (int i = 0; i < contactRepo.contactListRepo.size(); i++) {
+				Person person = contactRepo.contactListRepo.get(i);
+				if (pFname.equals(person.getFname())) {
+					contactRepo.contactListRepo.remove(person);
+				}
 			}
+		}
+		
+		System.out.println("After Deleting the Address Book Repo is");
+		for (int i = 0; i <addressBookRepo.addressBooks.size(); i++) { 
+			ContactListRepository contactRepoInfo = addressBookRepo.addressBooks.get(i);
+			String repoName = contactRepoInfo.repoName;
+			System.out.println(repoName);
+			System.out.println(contactRepoInfo.contactListRepo);
 		}
 	}
 }
+
+
